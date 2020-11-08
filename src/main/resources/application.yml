@@ -1,0 +1,29 @@
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+    gateway:
+      discovery:
+        locator:
+          # 让gateway通过服务发现找到其他微服务
+          enabled: true
+      routes:
+        - id: after_route
+          uri: lb://user-center
+          predicates:
+            - TimeBetween=上午9:00, 上午10:00
+  application:
+    name: gateway
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+
+server:
+  port: 6060
